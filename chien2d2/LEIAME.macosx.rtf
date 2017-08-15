@@ -1,0 +1,170 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 ArialMT;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww25100\viewh12920\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\b\fs28 \cf0 Instalando e configurando a Chien2D2 no Mac OS X
+\b0\fs24 \
+\
+OBS: Esse procedimento foi testado na vers\'e3o 10.10.4 (Yosemite).\
+\
+
+\b Instala\'e7\'e3o do SDL, SDL_mixer e SDL_image
+\b0 \
+\
+1. Primeiramente baixe a biblioteca SDL do site oficial. O link direto para a vers\'e3o atual (2.0.3) \'e9 https://www.libsdl.org/release/SDL2-2.0.3.dmg\
+\
+2. Clique duas vezes sobre o arquivo baixado (no nosso exemplo, SDL2-2.0.3.dmg). Copie o arquivo SDL.framework para a pasta \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b\fs22 \cf0 \CocoaLigature0 /Library/Frameworks/ 
+\b0 (
+\fs24 \CocoaLigature1 Biblioteca/Frameworks na vers\'e3o em portugu\'eas), localizada na raiz do sistema (exige permiss\'e3o de root). Caso n\'e3o \
+possua, crie a pasta Biblioteca/Frameworks na sua pasta de usu\'e1rio e copie para l\'e1 a biblioteca SDL.\
+\
+3. A vers\'e3o j\'e1 compilada do framework tem problema de assinatura, quebrando o XCode quando tentar rodar. Para resolver esse problema \
+precisamos atualizar essa assinatura do framework. Execute o seguinte comando na pasta Library/Frameworks:\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\fs22 \cf0 \CocoaLigature0 codesign -f -s - SDL2.framework
+\fs24 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+4. Baixe e instale a biblioteca SDL mixer. O link direto para a vers\'e3o atual (2.0.0) \'e9 https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.0.dmg.\
+\
+5. Repita o mesmo procedimento do passo 2.\
+\
+6. Baixe e instale a biblioteca SDL image. O link direto para a vers\'e3o atual (2.0.0) \'e9 https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.dmg\
+\
+7. Repita o mesmo procedimento do passo 2.\
+\
+8. A Chien tamb\'e9m precisa do OpenGL. Entretanto, o framework para ele j\'e1 est\'e1 no Mac OS X, na pasta 
+\b\fs22 \CocoaLigature0 /Library/Frameworks/
+\b0\fs24 \CocoaLigature1 .\
+\
+
+\b Configurando o XCode
+\b0 \
+\
+1. Abra o XCode e escolha a op\'e7\'e3o 
+\b Create a new XCode project
+\b0 .\
+2. Escolha OS X, Command Line Tool.\
+3. D\'ea um nome para seu projeto.\
+4. Selecione seu projeto, no Project Navigator.\
+5. Clique em Build Phases, no centro da tela.\
+6. V\'e1 em Link Binary With Libraries. Clique em +\
+7. Pesquise por OpenGL. Adicione OpenGL.framework ao seu projeto.\
+8. Clique novamente em +, e em seguida pressione o bot\'e3o Add Other\'85\
+9. V\'e1 at\'e9 a raiz do sistema e entre em Biblioteca/Frameworks (ou Library/Frameworks).\
+10. Escolha as bibliotecas SDL.framework, SDL_image.framework e SDL_mixer.framework\
+11. Clique novamente em + e Add Other\'85\
+12. Adicione os arquivos da pasta lib dentro da Chien2D2 (libc2d2.a, libca2.a, libcator.a e libcm2.a). OBS: N\'e3o adicione a pasta onde eles se encontram, mas \
+todos os .a individualmente.\
+13. Pronto! Adicionamos todas as bibliotecas necess\'e1rias.\
+\
+Agora precisamos adicionar os arquivos .h\
+\
+1. No XCode, v\'e1 em Build Settings (clique no nome do projeto caso n\'e3o esteja encontrando).\
+2. Em Search Paths, adicione os caminhos onde est\'e3o os frameworks SDL, SDL_image e SDL_mixer em Header Search Paths (tanto em Debug quanto em Release)\
+\
+<diretorio_base_chien>/include/\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\fs22 \cf0 \CocoaLigature0 /Library/Frameworks/SDL2.framework/Headers\
+/Library/Frameworks/SDL2_image.framework/Headers\
+/Library/Frameworks/SDL2_mixer.framework/Headers
+\fs24 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+DICA: Para permitir que seu c\'f3digo carregue as imagens inclu\'eddas no projeto, clique no computador do lado direito do Play e Stop e depois Edit Scheme.\
+\
+- Em Run, Options, marque a op\'e7\'e3o \'93Use Custom working directory\'94. Em seguida encontre a pasta do projeto que est\'e1 trabalhando. Pronto. Agora voc\'ea \
+pode adicionar as imagens no pr\'f3prio projeto que eles ser\'e3o lidos corretamente.\
+\
+
+\b\fs28 Compilando a Chien2D2 no MacOS X\
+\
+
+\b0\fs24 O Makefile presente no projeto j\'e1 est\'e1 pronto para compilar a Chien2D2. Antes de tudo renomeie o arquivo MakefileMacOSX para Makefile.\
+\
+Agora ser\'e3o necess\'e1rios dois pequenos ajustes, um no arquivo 
+\fs22 \CocoaLigature0 SDL2_mixer.h e outro em SDL2_image.h.\
+\
+Abra o arquivo 
+\b SDL_image.h
+\b0 , localizado, no nosso exemplo, em 
+\b /Library/Frameworks/SDL2_image.framework/Headers
+\b0 . Troque as linhas:\
+\
+#include <SDL2/SDL.h>\
+#include <SDL2/SDL_version.h>\
+#include <SDL2/begin_code.h>\
+\
+por \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b \cf0 #include <SDL.h>\
+#include <SDL_version.h>\
+#include <begin_code.h>
+\b0 \
+\
+Fa\'e7a o mesmo com o arquivo 
+\b SDL2_mixer.h
+\b0 , localizado, no nosso exemplo, em 
+\b /Library/Frameworks/SDL2_mixer.framework/Headers
+\b0 . Troque as linhas:
+\fs24 \CocoaLigature1 \
+\
+#include <SDL2/SDL_stdinc.h>\
+#include <SDL2/SDL_rwops.h>\
+#include <SDL2/SDL_audio.h>\
+#include <SDL2/SDL_endian.h>\
+#include <SDL2/SDL_version.h>\
+#include <SDL2/begin_code.h>\
+\
+por \
+\
+\pard\tx674\pardeftab674\pardirnatural
+
+\b \cf0 #include <SDL_stdinc.h>\
+#include <SDL_rwops.h>\
+#include <SDL_audio.h>\
+#include <SDL_endian.h>\
+#include <SDL_version.h>\
+#include <begin_code.h>
+\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+Explicando: Esse endere\'e7o de include n\'e3o se reflete dessa forma na pasta SDL2.frameworks. L\'e1 os arquivos include (.h)  ficam em SDL2.frameworks/Headers, \
+caminho indicado no Makefile para que sejam encontrados.\
+\
+Agora basta acessar a pasta da Chien2D2 e executar o comando make.\
+\
+
+\b\fs36 NOTAS
+\b0\fs24 \
+\
+A vers\'e3o corrente da Chien2D2 est\'e1 utilizando SDL2, ou seja, houveram mudan\'e7as na forma de desenho na tela e, obviamente, a biblioteca\
+n\'e3o \'e9 compilada com SDL 1.2.\
+\
+O principal impacto para o usu\'e1rio \'e9 em rela\'e7\'e3o \'e0 fun\'e7\'e3o C2D2_Inicia: as janelas agora s\'f3 podem ser criadas utilizando a macro C2D2_DESENHO_OPENGL, \
+ou seja, n\'e3o h\'e1 mais suporte para a janela C2D2_DESENHO_PADRAO.\
+\
+Outra caracter\'edstica que impacta ao usu\'e1rio \'e9 quanto \'e0 transpar\'eancia: n\'e3o \'e9 necess\'e1rio utilizar o Magenta (255, 0, 255) para indicar o fundo da imagem, \
+podendo ser utilizada a transpar\'eancia normal. Isso se deve \'e0 uma limita\'e7\'e3o t\'e9cnica no tratamento dos pixels, e n\'e3o h\'e1 uma melhora de desempenho.\
+\
+
+\b\fs36 TODO\
+\
+
+\b0\fs24 - Incluir no tutorial como instalar e configurar a biblioteca LUA;\
+- Certificar que n\'e3o \'e9 realmente necess\'e1rio usar magenta como cor de fundo;\
+- Estudar a necessidade de manter a funcionalidade de janela com a macro C2D2_DESENHO_PADRAO;\
+\
+___\
+\
+Criado por Emanuel Schimidt em Junho, 2015.}

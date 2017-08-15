@@ -1,0 +1,14 @@
+O conteúdo destas pastas é como segue:
+
+	chien2D2 - pasta contendo o código fonte das bibliotecas.
+	exemplos - exemplos usando a bilioteca.
+	doc - documentação da biblioteca.
+	
+Instruções:
+	1 - Compile e configure as bibliotecas no seu sistema. Referencie os 
+	arquivos de instrução específicos da sua plataforma.
+	
+	2 - Uma vez configuradas as bibliotecas, você pode compilar e testar
+	os exemplos.
+	
+	3 - Para esclarecimentos, consulte a documentação na pasta doc.
